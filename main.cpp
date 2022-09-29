@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstring>
-using namespace std;
 
 const int Nmax = 26;
 
@@ -18,30 +17,31 @@ typedef struct lSet {
 void asList();
 lSet * lSetFromStdin();
 lSet * lAppends(lSet * setTail, char letter);
-void lUnity(lSet * dest, lSet * src);
 void lPrintln(lSet * set);
+void lUnity(lSet * dest, lSet * src);
 lSet * lSubtract(lSet * from, lSet * what);
 
 // Machine Word Solution
 void asMachineWord();
+unsigned mwFromStdin();
 void mwPrintln(unsigned n);
 
 int main() {
     int choose;
-    cout << "1 - Array\n2 - List\n3 - Machine Word\n";
-    cin >> choose;
+    std::cout << "1 - Array\n2 - List\n3 - Machine Word\n";
+    std::cin >> choose;
     getchar();
     switch (choose) {
         case 1:
-            cout << "Array:\n";
+            std::cout << "Array:\n";
             asArray();
             break;
         case 2:
-            cout << "List:\n";
+            std::cout << "List:\n";
             asList();
             break;
         case 3:
-            cout << "Machine Word:\n";
+            std::cout << "Machine Word:\n";
             asMachineWord();
             break;
         default:;
@@ -49,12 +49,28 @@ int main() {
     return 0;
 }
 
+
+void asMachineWord() {
+    std::cout << "Enter A: ";
+    unsigned A = mwFromStdin();
+    std::cout << "Enter B: ";
+    unsigned B = mwFromStdin();
+    std::cout << "Enter C: ";
+    unsigned C = mwFromStdin();
+    std::cout << "Enter D: ";
+    unsigned D = mwFromStdin();
+
+    std::cout << "A - {B+C+D}: ";
+    mwPrintln(A & ~(B | C | D));
+
+}
+
 void mwPrintln(unsigned n) {
     for(char ltr = 'a'; ltr <= 'z'; ltr++) {
-        if(n%2) cout << ltr;
+        if(n%2) std::cout << ltr;
         n = n >> 1;
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 unsigned mwFromStdin() {
@@ -68,19 +84,23 @@ unsigned mwFromStdin() {
     return res;
 }
 
-void asMachineWord() {
-    cout << "Enter A: ";
-    unsigned A = mwFromStdin();
-    cout << "Enter B: ";
-    unsigned B = mwFromStdin();
-    cout << "Enter C: ";
-    unsigned C = mwFromStdin();
-    cout << "Enter D: ";
-    unsigned D = mwFromStdin();
 
-    cout << "A - {B+C+D}: ";
-    mwPrintln(A & ~(B | C | D));
+void asList() {
+    std::cout << "Enter A: ";
+    lSet * A = lSetFromStdin();
+    std::cout << "Enter B: ";
+    lSet * B = lSetFromStdin();
+    std::cout << "Enter C: ";
+    lSet * C = lSetFromStdin();
+    std::cout << "Enter D: ";
+    lSet * D = lSetFromStdin();
 
+    lUnity(B, C);
+    lUnity(B, D);
+    A = lSubtract(A, B);
+
+    std::cout << "A - {B+C+D}: ";
+    lPrintln(A);
 }
 
 lSet * lSetFromStdin() {
@@ -99,30 +119,12 @@ lSet * lSetFromStdin() {
     return newSet;
 }
 
-void asList() {
-    cout << "Enter A: ";
-    lSet * A = lSetFromStdin();
-    cout << "Enter B: ";
-    lSet * B = lSetFromStdin();
-    cout << "Enter C: ";
-    lSet * C = lSetFromStdin();
-    cout << "Enter D: ";
-    lSet * D = lSetFromStdin();
-
-    lUnity(B, C);
-    lUnity(B, D);
-    A = lSubtract(A, B);
-
-    cout << "A - {B+C+D}: ";
-    lPrintln(A);
-}
-
 void lPrintln(lSet * set) {
     lSet * ptr;
     for(ptr = set; ptr != nullptr; ptr = ptr->next) {
-        cout << ptr->letter;
+        std::cout << ptr->letter;
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void lUnity(lSet * dest, lSet * src) {
@@ -194,22 +196,22 @@ void asArray() {
     char * Empty = new char[1];
     Empty[0] = '\0';
 
-    cout << "enter A: ";
+    std::cout << "enter A: ";
     fgets(A, Nmax, stdin);
     A[strlen(A)-1] = '\0';
     A = arrayUnity(A, Empty);
 
-    cout << "enter B: ";
+    std::cout << "enter B: ";
     fgets(B, Nmax, stdin);
     B[strlen(B)-1] = '\0';
     B = arrayUnity(B, Empty);
 
-    cout << "enter C: ";
+    std::cout << "enter C: ";
     fgets(C, Nmax, stdin);
     C[strlen(C)-1] = '\0';
     C = arrayUnity(C, Empty);
 
-    cout << "enter D: ";
+    std::cout << "enter D: ";
     fgets(D, Nmax, stdin);
     D[strlen(D)-1] = '\0';
     D = arrayUnity(D, Empty);
@@ -218,7 +220,7 @@ void asArray() {
     T = arrayUnity(T, D);
     A = arraySubtraction(A, T);
 
-    cout<<"A - {B+C+D}): "<<A<<endl;
+    std::cout<<"A - {B+C+D}): "<<A<<std::endl;
 }
 
 char *arrayUnity(const char *A, const char *B) {
