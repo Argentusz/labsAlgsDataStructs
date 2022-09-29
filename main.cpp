@@ -223,53 +223,53 @@ void asArray() {
     std::cout<<"A - {B+C+D}): "<<A<<std::endl;
 }
 
-char *arrayUnity(const char *A, const char *B) {
-    char *C = new char[26];
+char *arrayUnity(const char * A, const char * B) {
+    char * C = new char[26];
     strcpy(C,B);
     int i = 0;
     int j;
     int k = (int)strlen(C);
-    bool is_in;
+    bool isIn;
     while (A[i]!='\0') {
         j=0;
-        is_in=false;
+        isIn = false;
         while (C[j]!='\0') {
             if (A[i]==C[j]) {
-                is_in = true;
+                isIn = true;
                 break;
             }
             j++;
         }
-        if (!is_in) {
+        if (!isIn) {
             C[k] = A[i];
             k++;
         }
         i++;
     }
-    C[k]='\0';
+    C[k] = '\0';
     return C;
 }
 
 
-char *arraySubtraction(const char *A, const char *B) {
+char *arraySubtraction(const char * A, const char * B) {
     char *C = new char[26];
     int i,j,k;
-    i=0;
-    k=0;
-    bool is_in;
-    while (A[i]!='\0')
+    i = 0;
+    k = 0;
+    bool isIn;
+    while (A[i] != '\0')
     {
-        j=0;
-        is_in=false;
+        j = 0;
+        isIn = false;
         while (B[j]!='\0') {
             if (A[i]==B[j]) {
-                is_in = true;
+                isIn = true;
                 break;
             }
             j++;
         }
-        if (!is_in) {
-            C[k]=A[i];
+        if (!isIn) {
+            C[k] = A[i];
             k++;
         }
         i++;
