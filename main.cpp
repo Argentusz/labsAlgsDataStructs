@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstring>
-using namespace std;
 
 const int Nmax = 26;
 
@@ -16,28 +15,92 @@ typedef struct lSet {
     lSet * prev;
 } lSet;
 void asList();
+lSet * lSetFromStdin();
 lSet * lAppends(lSet * setTail, char letter);
-void lUnity(lSet * dest, lSet * src);
 void lPrintln(lSet * set);
+void lUnity(lSet * dest, lSet * src);
 lSet * lSubtract(lSet * from, lSet * what);
+
+// Machine Word Solution
+void asMachineWord();
+unsigned mwFromStdin();
+void mwPrintln(unsigned n);
 
 int main() {
     int choose;
-    cout << "1 - Array\n2 - List\n";
-    cin >> choose;
+    std::cout << "1 - Array\n2 - List\n3 - Machine Word\n";
+    std::cin >> choose;
     getchar();
     switch (choose) {
         case 1:
-            cout << "Array:\n";
+            std::cout << "Array:\n";
             asArray();
             break;
         case 2:
-            cout << "List:\n";
+            std::cout << "List:\n";
             asList();
+            break;
+        case 3:
+            std::cout << "Machine Word:\n";
+            asMachineWord();
             break;
         default:;
     }
     return 0;
+}
+
+
+void asMachineWord() {
+    std::cout << "Enter A: ";
+    unsigned A = mwFromStdin();
+    std::cout << "Enter B: ";
+    unsigned B = mwFromStdin();
+    std::cout << "Enter C: ";
+    unsigned C = mwFromStdin();
+    std::cout << "Enter D: ";
+    unsigned D = mwFromStdin();
+
+    std::cout << "A - {B+C+D}: ";
+    mwPrintln(A & ~(B | C | D));
+
+}
+
+void mwPrintln(unsigned n) {
+    for(char ltr = 'a'; ltr <= 'z'; ltr++) {
+        if(n%2) std::cout << ltr;
+        n = n >> 1;
+    }
+    std::cout << std::endl;
+}
+
+unsigned mwFromStdin() {
+    unsigned res = 0;
+    char * temp = new char[Nmax];
+    fgets(temp, Nmax, stdin);
+    for(char * ptr = temp; *ptr != '\0' && *ptr != '\n'; ptr++) {
+        unsigned num = 1 << ((*ptr - 'a'));
+        res = res | num;
+    }
+    return res;
+}
+
+
+void asList() {
+    std::cout << "Enter A: ";
+    lSet * A = lSetFromStdin();
+    std::cout << "Enter B: ";
+    lSet * B = lSetFromStdin();
+    std::cout << "Enter C: ";
+    lSet * C = lSetFromStdin();
+    std::cout << "Enter D: ";
+    lSet * D = lSetFromStdin();
+
+    lUnity(B, C);
+    lUnity(B, D);
+    A = lSubtract(A, B);
+
+    std::cout << "A - {B+C+D}: ";
+    lPrintln(A);
 }
 
 lSet * lSetFromStdin() {
@@ -56,30 +119,12 @@ lSet * lSetFromStdin() {
     return newSet;
 }
 
-void asList() {
-    cout << "Enter A: ";
-    lSet * A = lSetFromStdin();
-    cout << "Enter B: ";
-    lSet * B = lSetFromStdin();
-    cout << "Enter C: ";
-    lSet * C = lSetFromStdin();
-    cout << "Enter D: ";
-    lSet * D = lSetFromStdin();
-
-    lUnity(B, C);
-    lUnity(B, D);
-    A = lSubtract(A, B);
-
-    cout << "A-{B+C+D}: ";
-    lPrintln(A);
-}
-
 void lPrintln(lSet * set) {
     lSet * ptr;
     for(ptr = set; ptr != nullptr; ptr = ptr->next) {
-        cout << ptr->letter;
+        std::cout << ptr->letter;
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void lUnity(lSet * dest, lSet * src) {
@@ -151,22 +196,22 @@ void asArray() {
     char * Empty = new char[1];
     Empty[0] = '\0';
 
-    cout << "enter A: ";
+    std::cout << "enter A: ";
     fgets(A, Nmax, stdin);
     A[strlen(A)-1] = '\0';
     A = arrayUnity(A, Empty);
 
-    cout << "enter B: ";
+    std::cout << "enter B: ";
     fgets(B, Nmax, stdin);
     B[strlen(B)-1] = '\0';
     B = arrayUnity(B, Empty);
 
-    cout << "enter C: ";
+    std::cout << "enter C: ";
     fgets(C, Nmax, stdin);
     C[strlen(C)-1] = '\0';
     C = arrayUnity(C, Empty);
 
-    cout << "enter D: ";
+    std::cout << "enter D: ";
     fgets(D, Nmax, stdin);
     D[strlen(D)-1] = '\0';
     D = arrayUnity(D, Empty);
@@ -175,56 +220,56 @@ void asArray() {
     T = arrayUnity(T, D);
     A = arraySubtraction(A, T);
 
-    cout<<"Result (A-{B+C+D}): "<<A<<endl;
+    std::cout<<"A - {B+C+D}): "<<A<<std::endl;
 }
 
-char *arrayUnity(const char *A, const char *B) {
-    char *C = new char[26];
+char *arrayUnity(const char * A, const char * B) {
+    char * C = new char[26];
     strcpy(C,B);
     int i = 0;
     int j;
     int k = (int)strlen(C);
-    bool is_in;
+    bool isIn;
     while (A[i]!='\0') {
         j=0;
-        is_in=false;
+        isIn = false;
         while (C[j]!='\0') {
             if (A[i]==C[j]) {
-                is_in = true;
+                isIn = true;
                 break;
             }
             j++;
         }
-        if (!is_in) {
+        if (!isIn) {
             C[k] = A[i];
             k++;
         }
         i++;
     }
-    C[k]='\0';
+    C[k] = '\0';
     return C;
 }
 
 
-char *arraySubtraction(const char *A, const char *B) {
+char *arraySubtraction(const char * A, const char * B) {
     char *C = new char[26];
     int i,j,k;
-    i=0;
-    k=0;
-    bool is_in;
-    while (A[i]!='\0')
+    i = 0;
+    k = 0;
+    bool isIn;
+    while (A[i] != '\0')
     {
-        j=0;
-        is_in=false;
+        j = 0;
+        isIn = false;
         while (B[j]!='\0') {
             if (A[i]==B[j]) {
-                is_in = true;
+                isIn = true;
                 break;
             }
             j++;
         }
-        if (!is_in) {
-            C[k]=A[i];
+        if (!isIn) {
+            C[k] = A[i];
             k++;
         }
         i++;
