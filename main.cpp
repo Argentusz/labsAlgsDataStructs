@@ -16,14 +16,19 @@ typedef struct lSet {
     lSet * prev;
 } lSet;
 void asList();
+lSet * lSetFromStdin();
 lSet * lAppends(lSet * setTail, char letter);
 void lUnity(lSet * dest, lSet * src);
 void lPrintln(lSet * set);
 lSet * lSubtract(lSet * from, lSet * what);
 
+// Machine Word Solution
+void asMachineWord();
+void mwPrintln(unsigned n);
+
 int main() {
     int choose;
-    cout << "1 - Array\n2 - List\n";
+    cout << "1 - Array\n2 - List\n3 - Machine Word\n";
     cin >> choose;
     getchar();
     switch (choose) {
@@ -35,9 +40,47 @@ int main() {
             cout << "List:\n";
             asList();
             break;
+        case 3:
+            cout << "Machine Word:\n";
+            asMachineWord();
+            break;
         default:;
     }
     return 0;
+}
+
+void mwPrintln(unsigned n) {
+    for(char ltr = 'a'; ltr <= 'z'; ltr++) {
+        if(n%2) cout << ltr;
+        n = n >> 1;
+    }
+    cout << endl;
+}
+
+unsigned mwFromStdin() {
+    unsigned res = 0;
+    char * temp = new char[Nmax];
+    fgets(temp, Nmax, stdin);
+    for(char * ptr = temp; *ptr != '\0' && *ptr != '\n'; ptr++) {
+        unsigned num = 1 << ((*ptr - 'a'));
+        res = res | num;
+    }
+    return res;
+}
+
+void asMachineWord() {
+    cout << "Enter A: ";
+    unsigned A = mwFromStdin();
+    cout << "Enter B: ";
+    unsigned B = mwFromStdin();
+    cout << "Enter C: ";
+    unsigned C = mwFromStdin();
+    cout << "Enter D: ";
+    unsigned D = mwFromStdin();
+
+    cout << "A - {B+C+D}: ";
+    mwPrintln(A & ~(B | C | D));
+
 }
 
 lSet * lSetFromStdin() {
@@ -70,7 +113,7 @@ void asList() {
     lUnity(B, D);
     A = lSubtract(A, B);
 
-    cout << "A-{B+C+D}: ";
+    cout << "A - {B+C+D}: ";
     lPrintln(A);
 }
 
@@ -175,7 +218,7 @@ void asArray() {
     T = arrayUnity(T, D);
     A = arraySubtraction(A, T);
 
-    cout<<"Result (A-{B+C+D}): "<<A<<endl;
+    cout<<"A - {B+C+D}): "<<A<<endl;
 }
 
 char *arrayUnity(const char *A, const char *B) {
