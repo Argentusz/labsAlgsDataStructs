@@ -77,6 +77,7 @@ void mwPrintln(unsigned n) {
     std::cout << std::endl;
 }
 
+
 unsigned mwFromStdin() {
     unsigned res = 0;
     char * temp = new char[Nmax];
@@ -286,4 +287,15 @@ char *arraySubtraction(const char * A, const char * B) {
     }
     C[strlen(C)] = '\0';
     return C;
+}
+
+int * bitFromStdin() {
+    int * res = new int[Nmax];
+    char * temp = new char[Nmax];
+    fgets(temp, Nmax + 1, stdin);
+    for(char * ptr = temp; *ptr != '\0' && *ptr != '\n'; ptr++) {
+        int index = *ptr - 'a';
+        res[index] = 1;
+    }
+    return res;
 }
