@@ -1,6 +1,6 @@
 #include <iostream>
 #include <ctime>
-
+#include <cstring>
 const int Nmax = 26;
 
 // Array Solution
@@ -26,9 +26,17 @@ void asMachineWord();
 unsigned mwFromStdin();
 void mwPrintln(unsigned n);
 
+
+// Bits array solution
+void asBitsPrint(const int *ar);
+void asBits();
+int * bitFromStdin();
+int* bitsSum(const int *first, const int *second);
+int *bitsSubtraction(const int *first, const int *second);
+
 int main() {
     int choose;
-    std::cout << "1 - Array\n2 - List\n3 - Machine Word\n";
+    std::cout << "1 - Array\n2 - List\n3 - Machine Word\n4 - Bits Array\n";
     std::cin >> choose;
     getchar();
     switch (choose) {
@@ -43,6 +51,10 @@ int main() {
         case 3:
             std::cout << "Machine Word:\n";
             asMachineWord();
+            break;
+        case 4:
+            std::cout<<"Bits Array:\n";
+            asBits();
             break;
         default:;
     }
@@ -299,3 +311,68 @@ int * bitFromStdin() {
     }
     return res;
 }
+
+int* bitsSum(const int *first, const int *second) {
+    int *res = new int[Nmax];
+    int i;
+    for (i=0; i<Nmax; i++){
+        if (first[i]||second[i]) {
+            res[i]=1;
+        } else {
+            res[i] = 0;
+        }
+    }
+    return res;
+}
+
+int *bitsSubtraction(const int *first, const int *second) {
+    int *res = new int[Nmax];
+    int i;
+    for (i=0; i<Nmax; i++){
+        if (!first[i] || (first[i]+second[i]==2)) {
+            res[i]=0;
+        } else {
+            res[i] = 1;
+        }
+    }
+    return res;
+}
+
+void asBits() {
+    std::cout << "enter A: ";
+    int *A = bitFromStdin();
+
+    std::cout << "enter B: ";
+    int *B = bitFromStdin();
+
+
+    std::cout << "enter C: ";
+    int *C = bitFromStdin();
+
+
+    std::cout << "enter D: ";
+    int *D = bitFromStdin();
+
+
+    unsigned int start = clock();
+    int *T = bitsSum(B,C);
+    T = bitsSum(T,D);
+    T = bitsSubtraction(A,T);
+    unsigned int end = clock();
+    std::cout<<"A-{B+C+D}:";
+    asBitsPrint(T);
+    std::cout << "Time elapsed: " << end - start << "ms\n";
+
+}
+
+void asBitsPrint(const int *ar) {
+    char symb = 'a';
+    for (int i=0; i<Nmax;i++){
+        if(ar[i]) {
+            std::cout<<symb;
+        }
+        symb++;
+    }
+    std::cout<<"\n";
+}
+
