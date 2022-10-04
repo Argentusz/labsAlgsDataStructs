@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstring>
+#include <ctime>
 
 const int Nmax = 26;
 
@@ -61,7 +61,11 @@ void asMachineWord() {
     unsigned D = mwFromStdin();
 
     std::cout << "A - {B+C+D}: ";
-    mwPrintln(A & ~(B | C | D));
+    unsigned int start = clock();
+    unsigned res = A & ~(B | C | D);
+    unsigned int end = clock();
+    mwPrintln(res);
+    std::cout << "Time elapsed: " << end - start << "ms\n";
 
 }
 
@@ -76,7 +80,7 @@ void mwPrintln(unsigned n) {
 unsigned mwFromStdin() {
     unsigned res = 0;
     char * temp = new char[Nmax];
-    fgets(temp, Nmax, stdin);
+    fgets(temp, Nmax + 1, stdin);
     for(char * ptr = temp; *ptr != '\0' && *ptr != '\n'; ptr++) {
         unsigned num = 1 << ((*ptr - 'a'));
         res = res | num;
@@ -95,12 +99,15 @@ void asList() {
     std::cout << "Enter D: ";
     lSet * D = lSetFromStdin();
 
+    unsigned int start = clock();
     lUnity(B, C);
     lUnity(B, D);
     A = lSubtract(A, B);
+    unsigned int end = clock();
 
     std::cout << "A - {B+C+D}: ";
     lPrintln(A);
+    std::cout << "Time elapsed: " << end - start << "ms\n";
 }
 
 lSet * lSetFromStdin() {
@@ -216,11 +223,14 @@ void asArray() {
     D[strlen(D)-1] = '\0';
     D = arrayUnity(D, Empty);
 
+    unsigned int start = clock();
     T = arrayUnity(B, C);
     T = arrayUnity(T, D);
     A = arraySubtraction(A, T);
-
+    unsigned int end = clock();
     std::cout<<"A - {B+C+D}): "<<A<<std::endl;
+    std::cout << "Time elapsed: " << end - start << "ms\n";
+
 }
 
 char *arrayUnity(const char * A, const char * B) {
