@@ -87,6 +87,11 @@ int main() {
     return 0;
 }
 
+void printRaw(unsigned a) {
+    std::bitset<sizeof(a)*8> raw(a);
+    std::cout << raw << '\n';
+    std::cout << std::hex << a << '\n';
+}
 
 void asMachineWord(char ** str) {
     unsigned A;
@@ -114,6 +119,7 @@ void asMachineWord(char ** str) {
     unsigned res = A & ~(B | C | D);
     unsigned int end = clock();
     mwPrintln(res);
+    printRaw(res);
     std::cout << "Time elapsed: " << end - start << "ms\n";
 }
 
