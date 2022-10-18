@@ -21,7 +21,7 @@ ListSet *ListSet::ListAppends(ListSet *setTail, char letter) {
 
 
 ListSet& ListSet :: operator-(ListSet what) {
-    ListSet from_(this->string());
+    ListSet from_('\0', this->string());
     ListSet * from = &from_;
     for(ListSet * fromPtr = from; fromPtr != nullptr; fromPtr = fromPtr->next) {
         bool isIn = false;
@@ -66,7 +66,7 @@ void ListSet :: operator + (ListSet B) {
     }
 }
 
-ListSet::ListSet(const std::string& tempLine) : prev(nullptr), letter(-1), next(nullptr) {
+ListSet::ListSet(char name, const std::string& tempLine) : name(name), prev(nullptr), letter(-1), next(nullptr) {
         ListSet * setTail = this;
         for(char * ptr = const_cast<char*>(tempLine.c_str()); *ptr != '\0'; ptr++) {
             setTail = ListAppends(setTail, *ptr);
@@ -75,10 +75,11 @@ ListSet::ListSet(const std::string& tempLine) : prev(nullptr), letter(-1), next(
 
 void ListSet::Show() {
     ListSet * ptr;
+    std::cout << this->name << " = [";
     for(ptr = this; ptr != nullptr; ptr = ptr->next) {
         std::cout << ptr->letter;
     }
-    std::cout << std::endl;
+    std::cout << "]\n";
 }
 
 std::string ListSet::string() {
@@ -87,6 +88,10 @@ std::string ListSet::string() {
         res += ptr->letter;
     }
     return res;
+}
+
+void ListSet::SetName(char n) {
+    this->name = n;
 }
 
 ListSet &ListSet::operator = (const ListSet & B) = default;

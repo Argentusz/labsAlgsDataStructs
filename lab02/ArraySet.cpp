@@ -41,7 +41,7 @@ ArraySet & ArraySet :: operator ~ ( ) const
 }
 
 void ArraySet :: Show()
-{ std::cout << '\n' << S << " = [" << A << "]"; }
+{ std::cout << S << " = [" << A << "]\n"; }
 
 ArraySet :: ArraySet( ): n(0), S ('0'), A(new char[N + 1 ])
 { A[ 0 ] = 0; }
