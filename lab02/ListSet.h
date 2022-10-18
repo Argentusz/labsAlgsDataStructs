@@ -9,5 +9,8 @@ private:
 public:
     ListSet(const std::string&);
     void Show();
-    void operator | (ListSet);
+    std::string string();
+    void operator + (ListSet);
+    ListSet& operator - (ListSet);
+    ListSet& operator = (const ListSet&);
 };

@@ -11,7 +11,14 @@ int ArraySet::N = 26; // определение статического чле�
 int main()
 {
     ListSet One("qwerty");
-    ListSet Two("rtyu");
+    ListSet Two("rtu");
+    ListSet Three("e");
+    ListSet Four("gg");
+    Two + Three;
+    Two + Four;
+    Two.Show();
+    ListSet res = One -  Two;
+    res.Show();
 
     std::vector<std::string> strings;
     std::string str = *new string;

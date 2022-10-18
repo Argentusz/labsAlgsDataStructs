@@ -18,7 +18,38 @@ ListSet *ListSet::ListAppends(ListSet *setTail, char letter) {
     return setTail;
 }
 
-void ListSet :: operator|(ListSet B) {
+
+
+ListSet& ListSet :: operator-(ListSet what) {
+    ListSet from_(this->string());
+    ListSet * from = &from_;
+    for(ListSet * fromPtr = from; fromPtr != nullptr; fromPtr = fromPtr->next) {
+        bool isIn = false;
+        for(ListSet * whatPtr = &what; whatPtr != nullptr; whatPtr = whatPtr->next) {
+            if (whatPtr->letter == fromPtr->letter) {
+                isIn = true;
+                break;
+            }
+        }
+        if(isIn) {
+            if(fromPtr->next != nullptr && fromPtr->prev != nullptr) {
+                fromPtr->prev->next = fromPtr->next;
+                fromPtr->next->prev = fromPtr->prev;
+            } else if (fromPtr->next == nullptr && fromPtr->prev == nullptr) {
+                fromPtr = nullptr;
+            } else if (fromPtr->next == nullptr) {
+                fromPtr->prev->next = nullptr;
+            } else {
+                fromPtr->next->prev = nullptr;
+                from = from->next;
+            }
+        }
+        if(fromPtr == nullptr) break;
+    }
+    return *from;
+}
+
+void ListSet :: operator + (ListSet B) {
     ListSet * destTail;
     for(destTail = this; destTail->next != nullptr; destTail = destTail->next);
     for(ListSet * srcPtr = &B; srcPtr != nullptr; srcPtr = srcPtr->next) {
@@ -49,3 +80,13 @@ void ListSet::Show() {
     }
     std::cout << std::endl;
 }
+
+std::string ListSet::string() {
+    auto res = *new std::string ;
+    for(ListSet * ptr = this; ptr != nullptr; ptr = ptr->next) {
+        res += ptr->letter;
+    }
+    return res;
+}
+
+ListSet &ListSet::operator = (const ListSet & B) = default;
