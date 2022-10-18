@@ -4,7 +4,7 @@
 const int Nmax = 26;
 
 // Array Solution
-void asArray();
+void asArray(char ** str);
 char *arrayUnity(const char *A, const char *B);
 char *arraySubtraction(const char *A, const char *B);
 
@@ -14,71 +14,113 @@ typedef struct lSet {
     lSet * next;
     lSet * prev;
 } lSet;
-void asList();
+void asList(char ** str);
 lSet * lSetFromStdin();
+lSet * lSetFromString(char * tempLine);
 lSet * lAppends(lSet * setTail, char letter);
 void lPrintln(lSet * set);
 void lUnity(lSet * dest, lSet * src);
 lSet * lSubtract(lSet * from, lSet * what);
 
 // Machine Word Solution
-void asMachineWord();
+void asMachineWord(char ** str);
 unsigned mwFromStdin();
 void mwPrintln(unsigned n);
-
+unsigned mwFromString(char * temp);
 
 // Bits array solution
 void asBitsPrint(const int *ar);
-void asBits();
-int * bitFromStdin();
+void asBits(char ** str);
+int * bitsFromStdin();
+int * bitsFromString(char * temp);
 int* bitsSum(const int *first, const int *second);
 int *bitsSubtraction(const int *first, const int *second);
 
 int lab01_main() {
     int choose;
-    std::cout << "1 - Array\n2 - List\n3 - Machine Word\n4 - Bits Array\n";
+    char ** str;
+    std::cout << "1 - Array\n2 - List\n3 - Bits Array\n4 - Machine Word\n5 - Benchmark\n";
     std::cin >> choose;
     getchar();
     switch (choose) {
         case 1:
             std::cout << "Array:\n";
-            asArray();
+            asArray(nullptr);
             break;
         case 2:
             std::cout << "List:\n";
-            asList();
+            asList(nullptr);
             break;
         case 3:
-            std::cout << "Machine Word:\n";
-            asMachineWord();
+            std::cout<<"Bits Array:\n";
+            asBits(nullptr);
             break;
         case 4:
-            std::cout<<"Bits Array:\n";
-            asBits();
+            std::cout << "Machine Word:\n";
+            asMachineWord(nullptr);
+            break;
+        case 5:
+            str = new char*[4];
+            for(int i = 0; i < 4; i++) {
+                std::cout << "Enter " << (char)('A' + i) << ": ";
+                str[i] = new char[Nmax];
+                fgets(str[i], Nmax, stdin);
+                if (str[i][strlen(str[i]) - 1] == '\n') {
+                    str[i][strlen(str[i]) - 1] = '\0';
+                }
+            }
+            std::cout << std::endl;
+            std::cout << "Array Solution:\n";
+            asArray(str);
+            std::cout << std::endl;
+            std::cout << "List Solution:\n";
+            asList(str);
+            std::cout << std::endl;
+            std::cout << "Bit Array Solution:\n";
+            asBits(str);
+            std::cout << std::endl;
+            std::cout << "Machine Word Solution:\n";
+            asMachineWord(str);
             break;
         default:;
     }
     return 0;
 }
 
+void printRaw(unsigned a) {
+    std::bitset<sizeof(a)*8> raw(a);
+    std::cout << raw << '\n';
+    std::cout << std::hex << a << '\n';
+}
 
-void asMachineWord() {
-    std::cout << "Enter A: ";
-    unsigned A = mwFromStdin();
-    std::cout << "Enter B: ";
-    unsigned B = mwFromStdin();
-    std::cout << "Enter C: ";
-    unsigned C = mwFromStdin();
-    std::cout << "Enter D: ";
-    unsigned D = mwFromStdin();
+void asMachineWord(char ** str) {
+    unsigned A;
+    unsigned B;
+    unsigned C;
+    unsigned D;
+    if (str == nullptr) {
+        std::cout << "Enter A: ";
+        A = mwFromStdin();
+        std::cout << "Enter B: ";
+        B = mwFromStdin();
+        std::cout << "Enter C: ";
+        C = mwFromStdin();
+        std::cout << "Enter D: ";
+        D = mwFromStdin();
+    } else {
+        A = mwFromString(str[0]);
+        B = mwFromString(str[1]);
+        C = mwFromString(str[2]);
+        D = mwFromString(str[3]);
+    }
 
     std::cout << "A - {B+C+D}: ";
     unsigned int start = clock();
     unsigned res = A & ~(B | C | D);
     unsigned int end = clock();
     mwPrintln(res);
+    printRaw(res);
     std::cout << "Time elapsed: " << end - start << "ms\n";
-
 }
 
 void mwPrintln(unsigned n) {
@@ -91,26 +133,41 @@ void mwPrintln(unsigned n) {
 
 
 unsigned mwFromStdin() {
-    unsigned res = 0;
     char * temp = new char[Nmax];
     fgets(temp, Nmax + 1, stdin);
+    return mwFromString(temp);
+}
+
+unsigned mwFromString(char * temp) {
+    unsigned res = 0;
     for(char * ptr = temp; *ptr != '\0' && *ptr != '\n'; ptr++) {
-        unsigned num = 1 << ((*ptr - 'a'));
+        unsigned num = 1 << (*ptr - 'a');
         res = res | num;
     }
     return res;
 }
 
 
-void asList() {
-    std::cout << "Enter A: ";
-    lSet * A = lSetFromStdin();
-    std::cout << "Enter B: ";
-    lSet * B = lSetFromStdin();
-    std::cout << "Enter C: ";
-    lSet * C = lSetFromStdin();
-    std::cout << "Enter D: ";
-    lSet * D = lSetFromStdin();
+void asList(char ** str) {
+    lSet * A;
+    lSet * B;
+    lSet * C;
+    lSet * D;
+    if (str == nullptr) {
+        std::cout << "Enter A: ";
+        A = lSetFromStdin();
+        std::cout << "Enter B: ";
+        B = lSetFromStdin();
+        std::cout << "Enter C: ";
+        C = lSetFromStdin();
+        std::cout << "Enter D: ";
+        D = lSetFromStdin();
+    } else {
+        A = lSetFromString(str[0]);
+        B = lSetFromString(str[1]);
+        C = lSetFromString(str[2]);
+        D = lSetFromString(str[3]);
+    }
 
     unsigned int start = clock();
     lUnity(B, C);
@@ -124,13 +181,17 @@ void asList() {
 }
 
 lSet * lSetFromStdin() {
+    char * tempLine = new char[Nmax];
+    fgets(tempLine, Nmax, stdin);
+    tempLine[strlen(tempLine)-1] = '\0';
+    return lSetFromString(tempLine);
+}
+
+lSet * lSetFromString(char * tempLine) {
     lSet * tempSet = new lSet;
     tempSet->letter = -1;
     tempSet->next = nullptr;
     lSet * setTail = tempSet;
-    char * tempLine = new char[Nmax];
-    fgets(tempLine, Nmax, stdin);
-    tempLine[strlen(tempLine)-1] = '\0';
     for(char * ptr = tempLine; *ptr != '\0'; ptr++) {
         setTail = lAppends(setTail, *ptr);
     }
@@ -207,7 +268,7 @@ lSet * lAppends(lSet * setTail, char letter) {
     return setTail;
 }
 
-void asArray() {
+void asArray(char ** str) {
     char * A = new char[Nmax];
     char * B = new char[Nmax];
     char * C = new char[Nmax];
@@ -216,32 +277,43 @@ void asArray() {
     char * Empty = new char[1];
     Empty[0] = '\0';
 
-    std::cout << "enter A: ";
-    fgets(A, Nmax, stdin);
-    A[strlen(A)-1] = '\0';
-    A = arrayUnity(A, Empty);
+    if(str == nullptr) {
+        std::cout << "enter A: ";
+        fgets(A, Nmax, stdin);
+        A[strlen(A) - 1] = '\0';
+        A = arrayUnity(A, Empty);
 
-    std::cout << "enter B: ";
-    fgets(B, Nmax, stdin);
-    B[strlen(B)-1] = '\0';
-    B = arrayUnity(B, Empty);
+        std::cout << "enter B: ";
+        fgets(B, Nmax, stdin);
+        B[strlen(B) - 1] = '\0';
+        B = arrayUnity(B, Empty);
 
-    std::cout << "enter C: ";
-    fgets(C, Nmax, stdin);
-    C[strlen(C)-1] = '\0';
-    C = arrayUnity(C, Empty);
+        std::cout << "enter C: ";
+        fgets(C, Nmax, stdin);
+        C[strlen(C) - 1] = '\0';
+        C = arrayUnity(C, Empty);
 
-    std::cout << "enter D: ";
-    fgets(D, Nmax, stdin);
-    D[strlen(D)-1] = '\0';
-    D = arrayUnity(D, Empty);
+        std::cout << "enter D: ";
+        fgets(D, Nmax, stdin);
+        D[strlen(D) - 1] = '\0';
+        D = arrayUnity(D, Empty);
+    } else {
+        A = str[0];
+        A = arrayUnity(A, Empty);
+        B = str[1];
+        B = arrayUnity(B, Empty);
+        C = str[2];
+        C = arrayUnity(C, Empty);
+        D = str[3];
+        D = arrayUnity(D, Empty);
+    }
 
     unsigned int start = clock();
     T = arrayUnity(B, C);
     T = arrayUnity(T, D);
     A = arraySubtraction(A, T);
     unsigned int end = clock();
-    std::cout<<"A - {B+C+D}): "<<A<<std::endl;
+    std::cout<<"A - {B+C+D}: "<<A<<std::endl;
     std::cout << "Time elapsed: " << end - start << "ms\n";
 
 }
@@ -301,10 +373,14 @@ char *arraySubtraction(const char * A, const char * B) {
     return C;
 }
 
-int * bitFromStdin() {
-    int * res = new int[Nmax];
+int * bitsFromStdin() {
     char * temp = new char[Nmax];
     fgets(temp, Nmax + 1, stdin);
+    return bitsFromString(temp);
+}
+
+int * bitsFromString(char * temp) {
+    int * res = new int[Nmax];
     for(char * ptr = temp; *ptr != '\0' && *ptr != '\n'; ptr++) {
         int index = *ptr - 'a';
         res[index] = 1;
@@ -338,28 +414,33 @@ int *bitsSubtraction(const int *first, const int *second) {
     return res;
 }
 
-void asBits() {
-    std::cout << "enter A: ";
-    int *A = bitFromStdin();
-
-    std::cout << "enter B: ";
-    int *B = bitFromStdin();
-
-
-    std::cout << "enter C: ";
-    int *C = bitFromStdin();
-
-
-    std::cout << "enter D: ";
-    int *D = bitFromStdin();
-
+void asBits(char ** str) {
+    int * A;
+    int * B;
+    int * C;
+    int * D;
+    if (str == nullptr) {
+        std::cout << "enter A: ";
+        A = bitsFromStdin();
+        std::cout << "enter B: ";
+        B = bitsFromStdin();
+        std::cout << "enter C: ";
+        C = bitsFromStdin();
+        std::cout << "enter D: ";
+        D = bitsFromStdin();
+    } else {
+        A = bitsFromString(str[0]);
+        B = bitsFromString(str[1]);
+        C = bitsFromString(str[2]);
+        D = bitsFromString(str[3]);
+    }
 
     unsigned int start = clock();
     int *T = bitsSum(B,C);
     T = bitsSum(T,D);
     T = bitsSubtraction(A,T);
     unsigned int end = clock();
-    std::cout<<"A-{B+C+D}:";
+    std::cout<<"A - {B+C+D}: ";
     asBitsPrint(T);
     std::cout << "Time elapsed: " << end - start << "ms\n";
 
