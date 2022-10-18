@@ -36,7 +36,7 @@ int * bitsFromString(char * temp);
 int* bitsSum(const int *first, const int *second);
 int *bitsSubtraction(const int *first, const int *second);
 
-int main() {
+int lab01_main() {
     int choose;
     char ** str;
     std::cout << "1 - Array\n2 - List\n3 - Bits Array\n4 - Machine Word\n5 - Benchmark\n";
