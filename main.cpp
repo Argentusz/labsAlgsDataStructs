@@ -34,7 +34,7 @@ int * bitFromStdin();
 int* bitsSum(const int *first, const int *second);
 int *bitsSubtraction(const int *first, const int *second);
 
-int main() {
+int lab01_main() {
     int choose;
     std::cout << "1 - Array\n2 - List\n3 - Machine Word\n4 - Bits Array\n";
     std::cin >> choose;
