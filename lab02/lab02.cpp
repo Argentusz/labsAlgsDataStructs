@@ -11,14 +11,6 @@ using namespace std;
 int ArraySet::N = 26; // определение статического члена класса
 int main()
 {
-    BitArrSet A1('A', "abcd");
-    BitArrSet A2('B', "abefg");
-    BitArrSet A3('C', "fjljd");
-    BitArrSet A4('D', "qepkqw");
-    auto res2 = A1 - (A2 + A3 + A4);
-    res2.SetName('E');
-    res2.Show();
-
     std::vector<std::string> strings;
     std::string str = *new string;
     cout << "Введите А:\n";
@@ -63,6 +55,19 @@ int main()
     ListSet res = One -  Two;
     res.SetName('E');
     res.Show();
+
+    std::cout << "\nBit Array Solution:\n";
+    BitArrSet A1('A', strings[0]);
+    BitArrSet A2('B', strings[1]);
+    BitArrSet A3('C', strings[2]);
+    BitArrSet A4('D', strings[3]);
+    A1.Show();
+    A2.Show();
+    A3.Show();
+    A4.Show();
+    auto res2 = A1 - (A2 + A3 + A4);
+    res2.SetName('E');
+    res2.Show();
 
     return 0;
 }
