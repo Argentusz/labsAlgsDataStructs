@@ -8,6 +8,7 @@ private:
 public:
     BitArrSet(char, const std::string&);
     void Show();
+    void SetName(char);
     BitArrSet& operator + (BitArrSet);
     BitArrSet& operator - (BitArrSet&);
     BitArrSet& operator = (const BitArrSet&);

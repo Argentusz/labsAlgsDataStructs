@@ -9,6 +9,7 @@ BitArrSet::BitArrSet(char name_, const std::string &str) : name(name_), array(ne
 }
 
 void BitArrSet::Show() {
+    std::cout << this->name << " = [";
     char symb = 'a';
     for (int i=0; i<Nmax;i++){
         if(this->array[i]) {
@@ -16,7 +17,11 @@ void BitArrSet::Show() {
         }
         symb++;
     }
-    std::cout<<"\n";
+    std::cout << "]\n";
+}
+
+void BitArrSet::SetName(char n) {
+    this->name = n;
 }
 
 BitArrSet &BitArrSet::operator+(BitArrSet second) {

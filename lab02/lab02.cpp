@@ -16,6 +16,7 @@ int main()
     BitArrSet A3('C', "fjljd");
     BitArrSet A4('D', "qepkqw");
     auto res2 = A1 - (A2 + A3 + A4);
+    res2.SetName('E');
     res2.Show();
 
     std::vector<std::string> strings;
