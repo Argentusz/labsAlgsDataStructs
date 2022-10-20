@@ -9,6 +9,11 @@
 #include "BitArrSet.h"
 using namespace std;
 int ArraySet::N = 26; // определение статического члена класса
+
+void asArrayLab2(std::vector<std::string> strings);
+void asListLab2(std::vector<std::string> strings);
+void asBitArrayLab2(std::vector<std::string> strings);
+
 int main()
 {
     std::vector<std::string> strings;
@@ -27,6 +32,16 @@ int main()
     strings.push_back(str);
 
     std::cout << "Array Solution:\n";
+    asArrayLab2(strings);
+    std::cout << "\nList Solution:\n";
+    asListLab2(strings);
+    std::cout << "\nBit Array Solution:\n";
+    asBitArrayLab2(strings);
+
+    return 0;
+}
+
+void asArrayLab2(std::vector<std::string> strings) {
     class ArraySet A('A', strings[0]);
     class ArraySet B('B', strings[1]);
     class ArraySet C('C', strings[2]);
@@ -38,8 +53,8 @@ int main()
     D.Show();
     E = A&~(B|C|D);
     E.Show();
-    std::cout << "\nList Solution:\n";
-
+}
+void asListLab2(std::vector<std::string> strings) {
     class ListSet One('A', strings[0]);
     class ListSet Two('B', strings[1]);
     class ListSet Three('C', strings[2]);
@@ -55,8 +70,8 @@ int main()
     ListSet res = One -  Two;
     res.SetName('E');
     res.Show();
-
-    std::cout << "\nBit Array Solution:\n";
+}
+void asBitArrayLab2(std::vector<std::string> strings) {
     BitArrSet A1('A', strings[0]);
     BitArrSet A2('B', strings[1]);
     BitArrSet A3('C', strings[2]);
@@ -68,6 +83,4 @@ int main()
     auto res2 = A1 - (A2 + A3 + A4);
     res2.SetName('E');
     res2.Show();
-
-    return 0;
 }
