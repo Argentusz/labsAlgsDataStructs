@@ -6,10 +6,18 @@
 #include <vector>
 #include "ArraySet.h"
 #include "ListSet.h"
+#include "BitArrSet.h"
 using namespace std;
 int ArraySet::N = 26; // определение статического члена класса
 int main()
 {
+    BitArrSet A1('A', "abcd");
+    BitArrSet A2('B', "abefg");
+    BitArrSet A3('C', "fjljd");
+    BitArrSet A4('D', "qepkqw");
+    auto res2 = A1 - (A2 + A3 + A4);
+    res2.Show();
+
     std::vector<std::string> strings;
     std::string str = *new string;
     cout << "Введите А:\n";
