@@ -54,8 +54,11 @@ void asArrayLab2(std::vector<std::string> strings) {
     B.Show();
     C.Show();
     D.Show();
+    unsigned int start = clock();
     E = A&~(B|C|D);
+    unsigned int end = clock();
     E.Show();
+    std::cout << "Time elapsed: " << end - start << "ms\n";
 }
 void asListLab2(std::vector<std::string> strings) {
     class ListSet One('A', strings[0]);
@@ -68,11 +71,14 @@ void asListLab2(std::vector<std::string> strings) {
     Three.Show();
     Four.Show();
 
+    unsigned int start = clock();
     Two + Three;
     Two + Four;
     ListSet res = One -  Two;
+    unsigned int end = clock();
     res.SetName('E');
     res.Show();
+    std::cout << "Time elapsed: " << end - start << "ms\n";
 }
 void asBitArrayLab2(std::vector<std::string> strings) {
     BitArrSet A1('A', strings[0]);
@@ -83,9 +89,12 @@ void asBitArrayLab2(std::vector<std::string> strings) {
     A2.Show();
     A3.Show();
     A4.Show();
+    unsigned int start = clock();
     auto res2 = A1 - (A2 + A3 + A4);
+    unsigned int end = clock();
     res2.SetName('E');
     res2.Show();
+    std::cout << "Time elapsed: " << end - start << "ms\n";
 }
 
 void asMachineWordLab2(std::vector<std::string> strings) {
@@ -97,7 +106,10 @@ void asMachineWordLab2(std::vector<std::string> strings) {
     B.Show();
     C.Show();
     D.Show();
+    unsigned int start = clock();
     auto E = A - (B+C+D);
+    unsigned int end = clock();
     E.SetName('E');
     E.Show();
+    std::cout << "Time elapsed: " << end - start << "ms\n";
 }
