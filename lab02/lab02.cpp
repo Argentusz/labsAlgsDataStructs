@@ -7,15 +7,28 @@
 #include "ArraySet.h"
 #include "ListSet.h"
 #include "BitArrSet.h"
+#include "MachineWordSet.h"
 using namespace std;
 int ArraySet::N = 26; // определение статического члена класса
 
 void asArrayLab2(std::vector<std::string> strings);
 void asListLab2(std::vector<std::string> strings);
 void asBitArrayLab2(std::vector<std::string> strings);
-
+void asMachineWordLab2(std::vector<std::string> strings);
 int main()
 {
+    MachineWordSet A('A', "abcz");
+    MachineWordSet B('B', "defza");
+    MachineWordSet C('C', "da");
+    MachineWordSet D('D', "f");
+    A.Show();
+    B.Show();
+    C.Show();
+    D.Show();
+    auto E = A - (B+C+D);
+    E.SetName('E');
+    E.Show();
+
     std::vector<std::string> strings;
     std::string str = *new string;
     cout << "Введите А:\n";
