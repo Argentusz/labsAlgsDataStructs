@@ -17,18 +17,6 @@ void asBitArrayLab2(std::vector<std::string> strings);
 void asMachineWordLab2(std::vector<std::string> strings);
 int main()
 {
-    MachineWordSet A('A', "abcz");
-    MachineWordSet B('B', "defza");
-    MachineWordSet C('C', "da");
-    MachineWordSet D('D', "f");
-    A.Show();
-    B.Show();
-    C.Show();
-    D.Show();
-    auto E = A - (B+C+D);
-    E.SetName('E');
-    E.Show();
-
     std::vector<std::string> strings;
     std::string str = *new string;
     cout << "Введите А:\n";
@@ -50,6 +38,8 @@ int main()
     asListLab2(strings);
     std::cout << "\nBit Array Solution:\n";
     asBitArrayLab2(strings);
+    std::cout << "\nMachine Word Solution:\n";
+    asMachineWordLab2(strings);
 
     return 0;
 }
@@ -96,4 +86,18 @@ void asBitArrayLab2(std::vector<std::string> strings) {
     auto res2 = A1 - (A2 + A3 + A4);
     res2.SetName('E');
     res2.Show();
+}
+
+void asMachineWordLab2(std::vector<std::string> strings) {
+    MachineWordSet A('A', strings[0]);
+    MachineWordSet B('B', strings[1]);
+    MachineWordSet C('C', strings[2]);
+    MachineWordSet D('D', strings[3]);
+    A.Show();
+    B.Show();
+    C.Show();
+    D.Show();
+    auto E = A - (B+C+D);
+    E.SetName('E');
+    E.Show();
 }
