@@ -1,5 +1,7 @@
 #include "helpers.h"
 #include <iostream>
+#include <bitset>
+#include <cstring>
 
 const int Nmax = 26;
 
