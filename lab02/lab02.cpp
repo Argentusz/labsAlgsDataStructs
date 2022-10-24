@@ -15,7 +15,7 @@ void asArrayLab2(std::vector<std::string> strings);
 void asListLab2(std::vector<std::string> strings);
 void asBitArrayLab2(std::vector<std::string> strings);
 void asMachineWordLab2(std::vector<std::string> strings);
-int main()
+int mainLab02()
 {
     std::vector<std::string> strings;
     std::string str = *new string;

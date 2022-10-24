@@ -1,24 +1,19 @@
 #include "Tree.h"
-#include "time.h"
 #include "random"
 #include <iostream>
 
-int main( )
-{ int n = 0;
-    Tree Tr('a', 'z', 8);
-    srand(time(nullptr));
+int main() {
+    std::string temp{};
+    Tree Tr{'a', 'z', 7};
     setlocale(LC_ALL, "Russian");
-    Tr.MakeTree( );
-    if(Tr.exist( )) {
-        Tr.OutTree( );
+    Tr.MakeTree();
+    if (Tr.exist()) {
+        Tr.OutTree();
         std::cout << '\n' << "Обход в глубину: ";
-        n = Tr.DFS( );
-        std::cout << " Пройдено узлов = " << n;
-        std::cout << '\n' << "Обхофункциид в ширину: ";
-        n = Tr.BFS( );
-        std::cout << " Пройдено узлов = " << n;
-    }
-    else std::cout << "Дерево пусто!";
-    std::cout << '\n' << "=== Конец ===";
-    std::cin.get( );
+        temp = Tr.DFS();
+        std::cout << temp << " Пройдено узлов = " << temp.size()/2;
+        std::cout << '\n' << "Обход в ширину: ";
+        temp = Tr.BFS();
+        std::cout << temp << " Пройдено узлов = " << temp.size()/2;
+    } else std::cout << "Дерево пусто!";
 }
