@@ -3,11 +3,13 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <utility>
 #include <vector>
 #include "ArraySet.h"
 #include "ListSet.h"
 #include "BitArrSet.h"
 #include "MachineWordSet.h"
+#include "helpers.h"
 using namespace std;
 int ArraySet::N = 26; // определение статического члена класса
 
@@ -32,6 +34,12 @@ int mainLab02()
     cin >> str;
     strings.push_back(str);
 
+    asArrayLab2(strings);
+    char ** str0;
+    str0 = (char**)malloc(4*sizeof(char*));
+    for(auto i = 0; i < 4; i++) str0[i] = const_cast<char*>(strings[i].c_str());
+    asArray(str0);
+    return 0;
     std::cout << "Array Solution:\n";
     asArrayLab2(strings);
     std::cout << "\nList Solution:\n";
@@ -44,22 +52,28 @@ int mainLab02()
     return 0;
 }
 
-void asArrayLab2(std::vector<std::string> strings) {
+ArraySet tempFuk (std::vector<std::string> strings){
     class ArraySet A('A', strings[0]);
     class ArraySet B('B', strings[1]);
     class ArraySet C('C', strings[2]);
     class ArraySet D('D', strings[3]);
     class ArraySet E('E', "");
-    A.Show();
-    B.Show();
-    C.Show();
-    D.Show();
+    E = A & ~(B | C | D);
+    return E;
+}
+
+void asArrayLab2(std::vector<std::string> strings) {
+    const unsigned int iter = 1000000;
+    ArraySet E;
     unsigned int start = clock();
-    E = A&~(B|C|D);
+    for(auto i = 0; i < iter; i++) E = tempFuk(strings);
     unsigned int end = clock();
     E.Show();
-    std::cout << "Time elapsed: " << end - start << "ms\n";
+    std::cout << "Time elapsed: " << (end - start) / iter<< "ms\n";
 }
+
+
+
 void asListLab2(std::vector<std::string> strings) {
     class ListSet One('A', strings[0]);
     class ListSet Two('B', strings[1]);

@@ -225,14 +225,16 @@ void asArray(char ** str) {
         D = str[3];
         D = arrayUnity(D, Empty);
     }
-
+    const int iter = 10000;
     unsigned int start = clock();
-    T = arrayUnity(B, C);
-    T = arrayUnity(T, D);
-    A = arraySubtraction(A, T);
+    for(auto i = 1; i < iter; i++) {
+        T = arrayUnity(B, C);
+        T = arrayUnity(T, D);
+        A = arraySubtraction(A, T);
+    }
     unsigned int end = clock();
     std::cout<<"A - {B+C+D}: "<<A<<std::endl;
-    std::cout << "Time elapsed: " << end - start << "ms\n";
+    std::cout << "Time elapsed: " << (end - start)/iter << "ms\n";
 
 }
 

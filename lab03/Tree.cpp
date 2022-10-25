@@ -3,17 +3,14 @@
 #include <cstring>
 #include "Stack_Queue.h"
 #include <random>
+#include <functional>
 
 
 
-Tree ::	Tree(char nm, char maxNum, int maxRow): startName{nm}, endName{maxNum}, maxRowAmount{maxRow}, offset{rowLen / 2},
-root{nullptr}, SCREEN{new char * [maxRowAmount]} {
-    for(int i = 0; i < maxRowAmount; ++i ) SCREEN[i] = new char[rowLen];
-}
+Tree ::	Tree(char minName, char maxName, int maxRow): startName{minName}, endName{maxName}, maxRowAmount{maxRow}, offset{rowLen / 2}, root{nullptr}, display{} {}
 
 Tree :: ~Tree( ) {
-    for(int i = 0; i < maxRowAmount; ++i) delete []SCREEN[i];
-    delete [ ]SCREEN;
+    std::vector<std::string>().swap(display);
     delete root;
 }
 
@@ -35,14 +32,14 @@ void Tree :: OutTree( ) {
     clrScr();
     OutNodes(root, 1, offset);
     for (int i = 0; i < maxRowAmount; i++) {
-        SCREEN[i][rowLen - 1] = 0;
-        std::cout << '\n' << SCREEN[ i ];
+        display[i][rowLen - 1] = 0;
+        std::cout << '\n' << display[ i ];
     }
     std::cout << '\n';
 }
 
 void Tree :: OutNodes(Node * v, int r, int c) {
-    if (r && c && (c<rowLen)) SCREEN[r-1][c-1] = v->d;// вывод метки
+    if (r && c && (c<rowLen)) display[r - 1][c - 1] = v->d;// вывод метки
     if (r < maxRowAmount) {
         if (v->left) OutNodes(v->left, r + 1, c - (offset >> r)); //левый сын
         if (v->middle) OutNodes(v->middle, r + 1, c);	//средний сын
@@ -83,6 +80,21 @@ std::string Tree :: BFS() {
 
 void Tree :: clrScr( ) {
     for(int i = 0; i < maxRowAmount; i++) {
-        memset(SCREEN[i], '.', rowLen);
+        display.emplace_back(rowLen, '.');
     }
+}
+
+int Tree::DFSIF(const std::function<bool(Node *)>& ifFunc) {
+    const int MaxS = Nmax;
+    int res{};
+    STACK <Node *> S(MaxS);
+    S.push(root);
+    while (!S.empty( )) {
+        Node * v = S.pop( );
+        if(ifFunc(v)) res++;
+        if (v->right) S.push(v->right);
+        if (v->left) S.push(v->left);
+        if (v->middle) S.push(v->middle);
+    }
+    return res;
 }

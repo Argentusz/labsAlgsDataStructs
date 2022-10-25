@@ -1,29 +1,31 @@
+#include <vector>
 #include "Node.h"
 
 
 
 class Tree {
-    int rowLen = 100;
+    int rowLen = 80;
     int Nmax = 26;
     Node * root;
-    char startName, endName;		//счётчик тегов и максимальный тег
-    int maxRowAmount, offset;		//максимальная глубина, смещение корня
-    char ** SCREEN;	// память для выдачи на экран
-    void clrScr();	// очистка рабочей памяти
-    Node* MakeNode(int depth);	// создание поддерева
-    void OutNodes(Node * v, int r, int c); // выдача поддерева
-    Tree (const Tree &);	// фиктивный конструктор копии
+    char startName, endName;
+    int maxRowAmount, offset;
+    std::vector<std::string> display;
+    void clrScr();
+    Node* MakeNode(int depth);
+    void OutNodes(Node * v, int r, int c);
+    Tree (const Tree &);
 public:
-    Tree(char num, char maxNum, int maxRow);
+    Tree(char minName, char maxName, int maxRow);
     ~Tree();
-    Tree operator = (const Tree &) const = delete;	// присваивание
+    Tree operator = (const Tree &) const = delete;
     void MakeTree() {
         root = MakeNode(0);
     }
     bool exist() {
         return root != nullptr;
-    } // проверка «дерево не пусто»
+    }
     std::string DFS();	// обход дерева «в глубину»
     std::string BFS();	// обход «в ширину»
+    int DFSIF(const std::function<bool(Node*)>&);
     void OutTree();	// выдача на экран
 };
