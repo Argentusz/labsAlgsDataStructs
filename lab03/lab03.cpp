@@ -4,7 +4,7 @@
 
 int main() {
     std::string temp{};
-    Tree Tr{'A', 'z', 10};
+    Tree Tr{'a', 'z'};
     setlocale(LC_ALL, "Russian");
     Tr.MakeTree();
     if (Tr.exist()) {
@@ -15,6 +15,6 @@ int main() {
         std::cout << '\n' << "Обход в ширину: ";
         temp = Tr.BFS();
         std::cout << temp << " Пройдено узлов = " << temp.size()/2 << "\n";
-        std::cout << Tr.DFSIF([](Node * v){return v->right != nullptr;});
+        std::cout << Tr.rowVertices();
     } else std::cout << "Дерево пусто!";
 }

@@ -4,8 +4,8 @@
 
 
 class Tree {
-    int rowLen = 80;
-    int Nmax = 26;
+    int rowLen;
+    int Nmax;
     Node * root;
     char startName, endName;
     int maxRowAmount, offset;
@@ -15,7 +15,7 @@ class Tree {
     void OutNodes(Node * v, int r, int c);
     Tree (const Tree &);
 public:
-    Tree(char minName, char maxName, int maxRow);
+    Tree(char minName, char maxName);
     ~Tree();
     Tree operator = (const Tree &) const = delete;
     void MakeTree() {
@@ -27,5 +27,6 @@ public:
     std::string DFS();	// обход дерева «в глубину»
     std::string BFS();	// обход «в ширину»
     int DFSIF(const std::function<bool(Node*)>&);
+    int* rowVertices();
     void OutTree();	// выдача на экран
 };

@@ -31,4 +31,7 @@ public:
     Item pop() {
         h %= N; return Q[ h++ ];
     }
+    Item next() {
+        return Q[h];
+    }
 };

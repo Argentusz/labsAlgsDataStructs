@@ -7,7 +7,11 @@
 
 
 
-Tree ::	Tree(char minName, char maxName, int maxRow): startName{minName}, endName{maxName}, maxRowAmount{maxRow}, offset{rowLen / 2}, root{nullptr}, display{} {}
+Tree ::	Tree(char minName, char maxName):
+startName{minName}, endName{maxName},
+maxRowAmount{8}, rowLen{80}, offset{rowLen/2},
+root{nullptr}, display{},
+Nmax{maxName - minName + 1} {}
 
 Tree :: ~Tree( ) {
     std::vector<std::string>().swap(display);
@@ -65,7 +69,7 @@ std::string Tree :: DFS() {
 std::string Tree :: BFS() {
     const int MaxQ = Nmax;
     std::string str{};
-    QUEUE < Node * > Q(MaxQ);
+    QUEUE <Node*> Q(MaxQ);
     Q.push(root);
     while (!Q.empty( )) {
         Node * v = Q.pop( );
@@ -78,7 +82,34 @@ std::string Tree :: BFS() {
     return str;
 }
 
+int* Tree :: rowVertices() {
+    int* rows = new int[Nmax];
+    std::memset(rows, 0, Nmax * 4);
+    QUEUE<Node*> Q(Nmax);
+    QUEUE<int> level(Nmax);
+    Q.push(root);
+    level.push(1);
+    while (!Q.empty( )) {
+        Node * v = Q.pop();
+        if (v->left) { Q.push(v->left); level.push(level.next() + 1);}
+        if (v->right) { Q.push(v->right);level.push(level.next() + 1);}
+        if (v->middle) { Q.push(v->middle);level.push(level.next() + 1);}
+        rows[level.pop() - 1]++;
+    }
+    return rows;
+}
+
 void Tree :: clrScr( ) {
+    auto rows = rowVertices();
+    int temp = -1;
+    int width = -1;
+    int height;
+    for(height = 0; temp != 0; height++) {
+        temp = rows[height];
+        if (width < temp) width = temp;
+    }
+    height--;
+    std:: cout << "Width: " << width << "Height: " << height << "\n";
     for(int i = 0; i < maxRowAmount; i++) {
         display.emplace_back(rowLen, '.');
     }
