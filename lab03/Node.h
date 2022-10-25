@@ -1,14 +1,13 @@
+#include <string>
+
 class Node {
-    char d;	//тег узла
-    Node * lft;	// левый сын
-    Node  * mdl;	//— средний сын (если нужно)
-    Node * rgt;	// правый сын
+    Node * left;
+    Node  * middle;
 public:
-    Node() : lft(nullptr), rgt(nullptr), mdl(nullptr) { } // конструктор узла
-    ~Node(){
-        if(lft) delete lft; // деструктор (уничтожает поддерево)
-        if (rgt) delete rgt;
-        if(mdl) delete mdl;
-    }
-    friend class Tree;	// дружественный класс «дерево»
-} ;
+    Node() : left(nullptr), right(nullptr), middle(nullptr) { } // конструктор узла
+    ~Node() { delete left; delete right; delete middle; }
+    friend class Tree;
+
+    char d{};
+    Node * right;
+};

@@ -2,79 +2,99 @@
 #include <iostream>
 #include <cstring>
 #include "Stack_Queue.h"
-Tree ::	Tree(char nm, char mnm, int mxr):
-        num(nm), maxnum(mnm), maxrow(mxr), offset(40), root(nullptr),
-        SCREEN(new char * [maxrow]) {
-    for(int i = 0; i < maxrow; ++i ) SCREEN[ i ] = new char[ 80 ];
-}
+#include <random>
+#include <functional>
+
+
+
+Tree ::	Tree(char minName, char maxName, int maxRow): startName{minName}, endName{maxName}, maxRowAmount{maxRow}, offset{rowLen / 2}, root{nullptr}, display{} {}
 
 Tree :: ~Tree( ) {
-    for(int i = 0; i < maxrow; ++i) delete [ ]SCREEN[ i ];
-    delete [ ]SCREEN; delete root;
+    std::vector<std::string>().swap(display);
+    delete root;
 }
 
 Node * Tree :: MakeNode(int depth) {
     Node * v = nullptr;
-    int Y = (depth < rand( )%6+1) && (num <= 'z');
-    if (Y) {	// создание узла, если Y = 1
+    std::random_device randomDevice{};
+    std::uniform_int_distribution<int> dist(1, maxRowAmount);
+    if ((depth < dist(randomDevice)) && (startName <= endName)) {
         v = new Node;
-        v->lft = MakeNode(depth+1);
-        v->rgt = MakeNode(depth+1);
-        v->mdl = MakeNode(depth+1);
-        v->d = num++;
+        v->d = startName++;
+        v->left = MakeNode(depth + 1);
+        v->right = MakeNode(depth + 1);
+        v->middle = MakeNode(depth + 1);
     }
     return v;
 }
 
 void Tree :: OutTree( ) {
-    clrscr( );
+    clrScr();
     OutNodes(root, 1, offset);
-    for (int i = 0; i < maxrow; i++) {
-        SCREEN[ i ][ 79 ] = 0;
-        std::cout << '\n' << SCREEN[ i ];
+    for (int i = 0; i < maxRowAmount; i++) {
+        display[i][rowLen - 1] = 0;
+        std::cout << '\n' << display[ i ];
     }
     std::cout << '\n';
 }
 
 void Tree :: OutNodes(Node * v, int r, int c) {
-    if (r && c && (c<80)) SCREEN[r-1][c-1] = v->d;// вывод метки
-    if (r < maxrow) {
-        if (v->lft) OutNodes(v->lft, r + 1, c - (offset >> r)); //левый сын
-        if (v->mdl) OutNodes(v->mdl, r + 1, c);	//средний сын
-        if (v->rgt) OutNodes(v->rgt, r + 1, c + (offset >> r)); //правый сын
+    if (r && c && (c<rowLen)) display[r - 1][c - 1] = v->d;// вывод метки
+    if (r < maxRowAmount) {
+        if (v->left) OutNodes(v->left, r + 1, c - (offset >> r)); //левый сын
+        if (v->middle) OutNodes(v->middle, r + 1, c);	//средний сын
+        if (v->right) OutNodes(v->right, r + 1, c + (offset >> r)); //правый сын
     }
 }
 
-int Tree :: DFS() {
-    const int MaxS = 20; // максимальный размер стека
-    int count = 0;
-    STACK <Node *> S(MaxS);  //создание стека указателей на узлы
-    S.push(root);           // STACK <- root
-    while (!S.empty( ))  // Пока стек не пуст…
-    {   Node * v = S.pop( );                       // поднять узел из стека
-        std::cout << v->d <<  '_'; count++;       // выдать тег, счёт узлов
-        if (v->rgt) S.push(v->rgt);               // STACK <- (правый сын)
-        if (v->lft) S.push(v->lft);               // STACK <- (левый сын)
-        if (v->mdl) S.push(v->mdl);
+std::string Tree :: DFS() {
+    const int MaxS = Nmax;
+    std::string str{};
+    STACK <Node *> S(MaxS);
+    S.push(root);
+    while (!S.empty( )) {
+        Node * v = S.pop( );
+        str += v->d;
+        str += '_';
+        if (v->right) S.push(v->right);
+        if (v->left) S.push(v->left);
+        if (v->middle) S.push(v->middle);
     }
-    return count;
+    return str;
 }
-int Tree :: BFS() {
-    const int MaxQ = 20; //максимальный размер очереди
-    int count = 0;
-    QUEUE < Node * > Q(MaxQ);  //создание очереди указателей на узлы
-    Q.push(root); // QUEUE <- root поместить в очередь корень дерева
-    while (!Q.empty( )) //пока очередь не пуста
-    { 	Node * v = Q.pop( );// взять из очереди,
-        std::cout << v->d << '_'; count++; // выдать тег, счёт узлов
-        if (v->lft) Q.push(v->lft); // QUEUE <- (левый сын)
-        if (v->rgt) Q.push(v->rgt);// QUEUE <- (правый сын)
-        if (v->mdl) Q.push(v->mdl);//QUEUE <- (средний сын)
+std::string Tree :: BFS() {
+    const int MaxQ = Nmax;
+    std::string str{};
+    QUEUE < Node * > Q(MaxQ);
+    Q.push(root);
+    while (!Q.empty( )) {
+        Node * v = Q.pop( );
+        str += v->d;
+        str += '_';
+        if (v->left) Q.push(v->left);
+        if (v->right) Q.push(v->right);
+        if (v->middle) Q.push(v->middle);
     }
-    return count;
+    return str;
 }
 
-void Tree :: clrscr( )
-{ for(int i = 0; i < maxrow; i++)
-        memset(SCREEN[i], '.', 80);
+void Tree :: clrScr( ) {
+    for(int i = 0; i < maxRowAmount; i++) {
+        display.emplace_back(rowLen, '.');
+    }
+}
+
+int Tree::DFSIF(const std::function<bool(Node *)>& ifFunc) {
+    const int MaxS = Nmax;
+    int res{};
+    STACK <Node *> S(MaxS);
+    S.push(root);
+    while (!S.empty( )) {
+        Node * v = S.pop( );
+        if(ifFunc(v)) res++;
+        if (v->right) S.push(v->right);
+        if (v->left) S.push(v->left);
+        if (v->middle) S.push(v->middle);
+    }
+    return res;
 }
