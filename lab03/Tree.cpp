@@ -7,7 +7,11 @@
 
 
 
-Tree ::	Tree(char minName, char maxName, int maxRow): startName{minName}, endName{maxName}, maxRowAmount{maxRow}, offset{rowLen / 2}, root{nullptr}, display{} {}
+Tree ::	Tree(char minName, char maxName, int maxHeight, int maxWid):
+startName{minName}, endName{maxName},
+maxRowAmount{maxHeight}, rowLen{maxWid}, offset{rowLen/2},
+root{nullptr}, display{},
+Nmax{maxName - minName + 1} {}
 
 Tree :: ~Tree( ) {
     std::vector<std::string>().swap(display);
@@ -28,11 +32,11 @@ Node * Tree :: MakeNode(int depth) {
     return v;
 }
 
+
 void Tree :: OutTree( ) {
     clrScr();
     OutNodes(root, 1, offset);
     for (int i = 0; i < maxRowAmount; i++) {
-        display[i][rowLen - 1] = 0;
         std::cout << '\n' << display[ i ];
     }
     std::cout << '\n';
@@ -41,9 +45,9 @@ void Tree :: OutTree( ) {
 void Tree :: OutNodes(Node * v, int r, int c) {
     if (r && c && (c<rowLen)) display[r - 1][c - 1] = v->d;// вывод метки
     if (r < maxRowAmount) {
-        if (v->left) OutNodes(v->left, r + 1, c - (offset >> r)); //левый сын
+        if (v->left) OutNodes(v->left, r + 1, c - (offset >> r) - 3); //левый сын
         if (v->middle) OutNodes(v->middle, r + 1, c);	//средний сын
-        if (v->right) OutNodes(v->right, r + 1, c + (offset >> r)); //правый сын
+        if (v->right) OutNodes(v->right, r + 1, c + (offset >> r) + 3); //правый сын
     }
 }
 
@@ -65,7 +69,7 @@ std::string Tree :: DFS() {
 std::string Tree :: BFS() {
     const int MaxQ = Nmax;
     std::string str{};
-    QUEUE < Node * > Q(MaxQ);
+    QUEUE <Node*> Q(MaxQ);
     Q.push(root);
     while (!Q.empty( )) {
         Node * v = Q.pop( );
@@ -78,7 +82,33 @@ std::string Tree :: BFS() {
     return str;
 }
 
+int* Tree :: rowVertices() {
+    int* rows = new int[Nmax];
+    std::memset(rows, 0, Nmax * 4);
+    QUEUE<Node*> Q(Nmax);
+    QUEUE<int> level(Nmax);
+    Q.push(root);
+    level.push(1);
+    while (!Q.empty( )) {
+        Node * v = Q.pop();
+        if (v->left) { Q.push(v->left); level.push(level.next() + 1);}
+        if (v->right) { Q.push(v->right);level.push(level.next() + 1);}
+        if (v->middle) { Q.push(v->middle);level.push(level.next() + 1);}
+        rows[level.pop() - 1]++;
+    }
+    return rows;
+}
+
 void Tree :: clrScr( ) {
+    auto rows = rowVertices();
+    int temp = -1;
+    int height;
+    for(height = 0; temp != 0; height++) {
+        temp = rows[height];
+    }
+    height--;
+    maxRowAmount = height;
+    offset = rowLen / 2;
     for(int i = 0; i < maxRowAmount; i++) {
         display.emplace_back(rowLen, '.');
     }
