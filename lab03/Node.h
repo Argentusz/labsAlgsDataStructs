@@ -15,7 +15,6 @@ public:
 //    bool exists(Directions);
     friend class Tree;
     char d{};
-
 };
 
 //bool Node::exists(Node::Directions s) {

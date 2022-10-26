@@ -15,7 +15,7 @@ class Tree {
     void OutNodes(Node * v, int r, int c);
     Tree (const Tree &);
 public:
-    Tree(char minName, char maxName);
+    Tree(char minName, char maxName, int maxHeight = 8, int maxWid = 131);
     ~Tree();
     Tree operator = (const Tree &) const = delete;
     void MakeTree() {

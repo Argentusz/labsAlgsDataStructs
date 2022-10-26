@@ -7,9 +7,9 @@
 
 
 
-Tree ::	Tree(char minName, char maxName):
+Tree ::	Tree(char minName, char maxName, int maxHeight, int maxWid):
 startName{minName}, endName{maxName},
-maxRowAmount{8}, rowLen{80}, offset{rowLen/2},
+maxRowAmount{maxHeight}, rowLen{maxWid}, offset{rowLen/2},
 root{nullptr}, display{},
 Nmax{maxName - minName + 1} {}
 
@@ -32,11 +32,11 @@ Node * Tree :: MakeNode(int depth) {
     return v;
 }
 
+
 void Tree :: OutTree( ) {
     clrScr();
     OutNodes(root, 1, offset);
     for (int i = 0; i < maxRowAmount; i++) {
-        display[i][rowLen - 1] = 0;
         std::cout << '\n' << display[ i ];
     }
     std::cout << '\n';
@@ -45,9 +45,9 @@ void Tree :: OutTree( ) {
 void Tree :: OutNodes(Node * v, int r, int c) {
     if (r && c && (c<rowLen)) display[r - 1][c - 1] = v->d;// вывод метки
     if (r < maxRowAmount) {
-        if (v->left) OutNodes(v->left, r + 1, c - (offset >> r)); //левый сын
+        if (v->left) OutNodes(v->left, r + 1, c - (offset >> r) - 3); //левый сын
         if (v->middle) OutNodes(v->middle, r + 1, c);	//средний сын
-        if (v->right) OutNodes(v->right, r + 1, c + (offset >> r)); //правый сын
+        if (v->right) OutNodes(v->right, r + 1, c + (offset >> r) + 3); //правый сын
     }
 }
 
@@ -102,14 +102,13 @@ int* Tree :: rowVertices() {
 void Tree :: clrScr( ) {
     auto rows = rowVertices();
     int temp = -1;
-    int width = -1;
     int height;
     for(height = 0; temp != 0; height++) {
         temp = rows[height];
-        if (width < temp) width = temp;
     }
     height--;
-    std:: cout << "Width: " << width << "Height: " << height << "\n";
+    maxRowAmount = height;
+    offset = rowLen / 2;
     for(int i = 0; i < maxRowAmount; i++) {
         display.emplace_back(rowLen, '.');
     }
