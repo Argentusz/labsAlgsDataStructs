@@ -16,6 +16,8 @@ class Tree {
     Tree (const Tree &);
 public:
     Tree(char minName, char maxName, int maxHeight = 8, int maxWid = 131);
+    Tree(int maxWid = 131);
+    static Node * NodeFromStdin();
     ~Tree();
     Tree operator = (const Tree &) const = delete;
     void MakeTree() {
@@ -24,9 +26,14 @@ public:
     bool exist() {
         return root != nullptr;
     }
+    Node * Root() {
+        return root;
+    }
     std::string DFS();	// обход дерева «в глубину»
     std::string BFS();	// обход «в ширину»
+    std::string IS(Node *);
     int DFSIF(const std::function<bool(Node*)>&);
     int* rowVertices();
     void OutTree();	// выдача на экран
+    void OutTree2();
 };

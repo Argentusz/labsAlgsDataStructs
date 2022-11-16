@@ -12,7 +12,6 @@ public:
     };
     Node() : left(nullptr), right(nullptr), middle(nullptr) { } // конструктор узла
     ~Node() { delete left; delete right; delete middle; }
-//    bool exists(Directions);
     friend class Tree;
     char d{};
 };

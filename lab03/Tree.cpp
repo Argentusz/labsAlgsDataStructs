@@ -13,6 +13,53 @@ maxRowAmount{maxHeight}, rowLen{maxWid}, offset{rowLen/2},
 root{nullptr}, display{},
 Nmax{maxName - minName + 1} {}
 
+Tree::Tree(int maxWid) : startName{'a'}, endName{'z'},
+                         rowLen{maxWid}, maxRowAmount{5}, offset{rowLen/2},
+                         display{},
+                         Nmax{'z' - 'a' + 1} {
+    auto r = new Node;
+    std::cout << "Имя: ";
+    std::cin >> r->d;
+    root = r;
+    auto choises = new bool[3];
+    std::cout << "Левая вершина(1/0): ";
+    std::cin >> choises[0];
+    std::cout << "Центральная вершина(1/0): ";
+    std::cin >> choises[1];
+    std::cout << "Правая вершина(1/0): ";
+    std::cin >> choises[2];
+
+    if (choises[0]) r->left = NodeFromStdin();
+    else r->left = nullptr;
+    if (choises[1]) r->middle = NodeFromStdin();
+    else r->middle = nullptr;
+    if (choises[2]) r->right = NodeFromStdin();
+    else r->right = nullptr;
+}
+
+Node *Tree::NodeFromStdin() {
+    auto r = new Node;
+    auto choises = new bool[3];
+    std::cout << "Имя: ";
+    std::cin >> r->d;
+    std::cout << "Левая вершина(1/0): ";
+    std::cin >> choises[0];
+    std::cout << "Центральная вершина(1/0): ";
+    std::cin >> choises[1];
+    std::cout << "Правая вершина(1/0): ";
+    std::cin >> choises[2];
+
+    if (choises[0]) r->left = NodeFromStdin();
+    else r->left = nullptr;
+    if (choises[1]) r->middle = NodeFromStdin();
+    else r->middle = nullptr;
+    if (choises[2]) r->right = NodeFromStdin();
+    else r->right = nullptr;
+
+    return r;
+}
+
+
 Tree :: ~Tree( ) {
     std::vector<std::string>().swap(display);
     delete root;
@@ -41,6 +88,8 @@ void Tree :: OutTree( ) {
     }
     std::cout << '\n';
 }
+
+
 
 void Tree :: OutNodes(Node * v, int r, int c) {
     if (r && c && (c<rowLen)) display[r - 1][c - 1] = v->d;// вывод метки
@@ -128,3 +177,24 @@ int Tree::DFSIF(const std::function<bool(Node *)>& ifFunc) {
     }
     return res;
 }
+
+std::string Tree::IS(Node * root) {
+    std::string temp{};
+    if (root->left) temp += IS(root->left);
+    if (root->middle) temp+= IS(root->middle);
+    temp += root->d;
+    temp += "_";
+    if (root->right) temp += IS(root->right);
+    return temp;
+}
+
+void Tree::OutTree2() {
+    clrScr();
+    OutNodes(root, 1, offset);
+    for (int i = maxRowAmount; i >= 0; i--) {
+        std::cout << '\n' << display[ i ];
+    }
+    std::cout << '\n';
+}
+
+
