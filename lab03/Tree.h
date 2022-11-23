@@ -16,7 +16,7 @@ class Tree {
     Tree (const Tree &);
 public:
     Tree(char minName, char maxName, int maxHeight = 8, int maxWid = 131);
-    Tree(int maxWid = 131);
+    explicit Tree(int maxWid = 131);
     static Node * NodeFromStdin();
     ~Tree();
     Tree operator = (const Tree &) const = delete;
